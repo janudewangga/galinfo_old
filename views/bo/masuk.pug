@@ -1,0 +1,93 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        title Galeri Informatika - Masuk
+        meta(content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport")
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css")
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/AdminLTE.min.css")
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic")
+    body.hold-transition.login-page
+        .login-box
+            .login-logo
+                a(href="/bo/masuk")
+                    b GALINFO
+                    | Masuk
+            .login-box-body
+                form#formMasuk(method="post" action="/")
+                    .form-group.has-feedback
+                        label.sr-only(for="username") Username
+                        input#username.form-control(type="text" name="username" placeholder="Username")
+                        span.glyphicon.glyphicon-user.form-control-feedback
+                    .form-group.has-feedback
+                        label.sr-only(for="password") Password
+                        input#password.form-control(type="password" name="password" placeholder="Password")
+                        span.glyphicon.glyphicon-lock.form-control-feedback
+                    button#masuk.btn.btn-flat.btn-primary.btn-block(type="submit" name="masuk" value="masuk") Masuk
+        p test
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js")
+        //script(src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/js/adminlte.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.18.0/jquery.validate.min.js")
+        script(src="/assets/lib.js")
+        script.
+            $.validator.setDefaults({
+                errorElement: "span",
+                errorClass: "help-block",
+                highlight: function (element, errorClass, validClass) {
+                    // Only validation controls
+                    if (!$(element).hasClass('novalidation')) {
+                        $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                    }
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    // Only validation controls
+                    if (!$(element).hasClass('novalidation')) {
+                        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                    }
+                },
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent());
+                    }
+                    else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
+                        error.insertAfter(element.parent().parent());
+                    }
+                    else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                        error.appendTo(element.parent().parent());
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }
+                }
+            });
+            $('#formMasuk').validate({
+                rules: {
+                    username: {
+                        required: true
+                    },
+                    password: {
+                        required: true
+                    }
+                },
+                messages: {
+                    username: 'Username harus diisi.',
+                    password: 'Password harus diisi.'
+                },
+                submitHandler: function () {
+                    const data = $('#formMasuk').serialize();
+                    $.ajax({
+                        type: 'post',
+                        url: '/bo/masuk',
+                        data: data
+                    }).done(function (response) {
+                        if (response.resultStatus === true) {
+                            redirect('/bo');
+                        } else {
+                            $('#formMasuk').setMsg(1, 'msll', 'danger', response.resultMsg);
+                        }
+                    });
+                }
+            });
