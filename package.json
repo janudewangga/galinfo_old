@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/janudewangga/galinfo#readme",
   "dependencies": {
-    "admin-lte": "^2.4.8",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "connect-session-sequelize": "^6.0.0",
